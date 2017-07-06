@@ -2,6 +2,8 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
+var ExtractTextPlugin     = require("extract-text-webpack-plugin")
+var extractStyles = new ExtractTextPlugin('[name].css?v=[hash]')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -42,6 +44,11 @@ module.exports = {
         options: vueLoaderConfig
       },
       {
+        test: /\.pug$/,
+        loader: 'vue-loader',
+        options: vueLoaderConfig
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test')]
@@ -63,5 +70,8 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    extractStyles
+  ]
 }
